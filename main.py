@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QListWidgetItem,QMainWindow, QApplication, QDialog, QFormLayout, QLineEdit, QDateTimeEdit, QPushButton, QHBoxLayout
+from PyQt5.QtWidgets import QListWidgetItem,QMainWindow, QApplication, QDialog, QFormLayout, QLineEdit, QDateTimeEdit, QPushButton, QHBoxLayout, QTextEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QDate, QDateTime, QTimer
 from datetime import datetime
@@ -8,7 +8,6 @@ import icalhandler
 from functions import formattime as ft
 from functions import qtDatetimeToDatetime as dtc
 from tkinter import Tk, filedialog
-
 
 tempcalendar=icalhandler.newCalendar("example.ics")
 
@@ -21,9 +20,9 @@ class AddEventDialog(QDialog):
     def saveEvent(self):
         t1=dtc(self.startdate)
         t2=dtc(self.enddate)
-        tempcalendar.addEvent(self.summary.text(), t1, t2)
+        desc = self.description.toPlainText()
+        tempcalendar.addEvent(self.summary.text(), t1, t2, desc)
         self.close()
-        
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Add Event")
@@ -33,6 +32,7 @@ class AddEventDialog(QDialog):
         self.startdate.setDate(QDate.currentDate())
         self.enddate=QDateTimeEdit()
         self.enddate.setDate(QDate.currentDate())
+        self.description=QTextEdit()
         self.acceptButton=QPushButton()
         self.acceptButton.setText("y")
         self.acceptButton.setStyleSheet("width:75px;")
@@ -45,9 +45,11 @@ class AddEventDialog(QDialog):
         self.button_layout.addWidget(self.acceptButton)
         self.button_layout.addWidget(self.declineButton)
         self.button_layout.setSpacing(5) 
+        self.description.setMaximumHeight(60)
         layout.addRow("Title: ", self.summary)
         layout.addRow("Start: ", self.startdate)
         layout.addRow("End: ", self.enddate)
+        layout.addRow("Description: ", self.description)
         layout.addRow("",self.button_layout)
         layout.setSpacing(10)
         self.setLayout(layout)
@@ -65,6 +67,7 @@ class EditEventDialog(AddEventDialog):
                 self.startdate.setDateTime(QDateTime(event["dtstart"]))
             if event["dtend"]:
                 self.enddate.setDateTime(QDateTime(event["dtend"]))
+            self.description.setText(event.get("description", "") or "")  
 
         self.acceptButton.clicked.disconnect()
         self.acceptButton.clicked.connect(self.editEvent)
@@ -72,11 +75,13 @@ class EditEventDialog(AddEventDialog):
     def editEvent(self):
         t1=dtc(self.startdate)
         t2=dtc(self.enddate)
+        desc = self.description.toPlainText()
         for i in tempcalendar.eventsList:
             if i["id"]==self.id:
                 i["summary"]=self.summary.text()
                 i["dtstart"]=t1
                 i["dtend"]=t2
+                i["description"]=desc  
                 tempcalendar._save_from_list()
                 self.close()
                 break
@@ -144,9 +149,11 @@ class Ui(QMainWindow):
             e=event['dtend']
 
             if s is not None and e is not None:
-                button=QPushButton(f"{event['summary']} {s.hour}:{s.minute}-{e.hour}:{e.minute} {e.day}.{e.month}.{e.year}")
+                button=QPushButton(f"{event['summary']} {s.hour}:{s.minute}-{e.hour}:{e.minute} {e.day}.{e.month}.{e.year} || {event['description']}")
             else:
                 button=QPushButton(f"{event['summary']} (brak daty)")
+            if event.get("description"):
+                button.setToolTip(event["description"])  
             button.setStyleSheet("""
                 QPushButton {
                     background-color: #4f4f4f;

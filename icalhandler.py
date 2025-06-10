@@ -21,6 +21,7 @@ class newCalendar:
             if i.name=="VEVENT":
                 dtstart=i.get('DTSTART')
                 dtend=i.get('DTEND')
+                description = i.get('DESCRIPTION')  
                 if hasattr(dtstart, "dt"):
                     dtstart=dtstart.dt
                 if hasattr(dtend, "dt"):
@@ -31,16 +32,19 @@ class newCalendar:
                     'id': t_id,
                     'summary': i.get('SUMMARY'),
                     'dtstart': dtstart,
-                    'dtend': dtend
+                    'dtend': dtend,
+                    'description': description  
                 })
             t_id += 1
         self._sortEventsByStart()
 
-    def addEvent(self, summary, dtstart, dtend):
+    def addEvent(self, summary, dtstart, dtend, description=""):
         t=Event()
         t['SUMMARY']=summary
         t['DTSTART']=vDatetime(_utc(dtstart))
         t['DTEND']=vDatetime(_utc(dtend))
+        if description:
+            t['DESCRIPTION'] = description
         self.gcal.add_component(t)
         self._save_calendar()
         self._reload_events_list()
@@ -55,6 +59,7 @@ class newCalendar:
             if i.name=="VEVENT":
                 dtstart=i.get('DTSTART')
                 dtend=i.get('DTEND')
+                description = i.get('DESCRIPTION')  
                 if hasattr(dtstart, "dt"):
                     dtstart=dtstart.dt
                 if hasattr(dtend, "dt"):
@@ -65,7 +70,8 @@ class newCalendar:
                     'id': t_id,
                     'summary': i.get('SUMMARY'),
                     'dtstart': dtstart,
-                    'dtend': dtend
+                    'dtend': dtend,
+                    'description': description  
                 })
             t_id += 1
         self._sortEventsByStart()
@@ -83,6 +89,8 @@ class newCalendar:
                 t['DTSTART']=vDatetime(_utc(i["dtstart"]))
             if i["dtend"] is not None:
                 t['DTEND']=vDatetime(_utc(i["dtend"]))
+            if i.get("description"):
+                t['DESCRIPTION'] = i["description"]
             self.gcal.add_component(t)
         self._save_calendar()
         self._reload_events_list()
