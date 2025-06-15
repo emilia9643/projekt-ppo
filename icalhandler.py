@@ -80,7 +80,7 @@ class newCalendar:
         with open(self.icalpath, 'wb') as file:
             file.write(self.gcal.to_ical())
 
-    def _save_from_list(self):
+    def save_from_list(self):
         self.gcal.subcomponents=[c for c in self.gcal.subcomponents if getattr(c, "name", "") != "VEVENT"]
         for i in self.eventsList:
             t=Event()

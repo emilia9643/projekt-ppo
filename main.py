@@ -10,7 +10,6 @@ from functions import qtDatetimeToDatetime as dtc
 from tkinter import Tk, filedialog
 
 tempcalendar=icalhandler.newCalendar("example.ics")
-
 root=Tk()
 root.withdraw()
 
@@ -29,9 +28,9 @@ class AddEventDialog(QDialog):
         layout=QFormLayout()
         self.summary=QLineEdit()
         self.startdate=QDateTimeEdit()
-        self.startdate.setDate(QDate.currentDate())
+        self.startdate.setDateTime(QDateTime.currentDateTime())
         self.enddate=QDateTimeEdit()
-        self.enddate.setDate(QDate.currentDate())
+        self.enddate.setDateTime(QDateTime.currentDateTime().addSecs(3600))
         self.description=QTextEdit()
         self.acceptButton=QPushButton()
         self.acceptButton.setText("y")
@@ -82,7 +81,7 @@ class EditEventDialog(AddEventDialog):
                 i["dtstart"]=t1
                 i["dtend"]=t2
                 i["description"]=desc  
-                tempcalendar._save_from_list()
+                tempcalendar.save_from_list()
                 self.close()
                 break
 
@@ -149,13 +148,14 @@ class Ui(QMainWindow):
             e=event['dtend']
 
             if s is not None and e is not None:
-                button=QPushButton(f"{event['summary']} {s.hour}:{s.minute}-{e.hour}:{e.minute} {e.day}.{e.month}.{e.year} || {event['description']}")
+                button=QPushButton(f"{event['summary']} {ft(s.hour)}:{ft(s.minute)}-{ft(e.hour)}:{ft(e.minute)} {e.day}.{e.month}.{e.year} || Description: {event['description']}")
             else:
                 button=QPushButton(f"{event['summary']} (brak daty)")
             if event.get("description"):
                 button.setToolTip(event["description"])  
             button.setStyleSheet("""
                 QPushButton {
+                    color:white;
                     background-color: #4f4f4f;
                     border: 0.5px solid black;
                     border-radius: 5px;
@@ -164,6 +164,7 @@ class Ui(QMainWindow):
                 }
                 QPushButton:hover {
                     background-color: #e0e0e0;
+                    color:black;
                 }
                 QPushButton:pressed {
                     background-color: #d0d0d0;
