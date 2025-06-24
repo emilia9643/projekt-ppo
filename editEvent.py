@@ -6,7 +6,7 @@ class EditEventDialog(AddEventDialog):
     def __init__(self, tid, tempcalendar):
         self.id = tid
         super().__init__(tempcalendar)
-        self.setWindowTitle(f"Edycja wydarzenia {self.id}")
+        self.setWindowTitle(f"Edit event {self.id}")
         event = next((e for e in self.tempcalendar.eventsList if e["id"] == self.id), None)
         if event:
             self.summary.setText(event["summary"] or "")
