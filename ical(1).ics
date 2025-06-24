@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Politechnika Wrocławska//Kalendarz zajęć i spotkań//PL
+BEGIN:VEVENT
+SUMMARY:Zaliczenie dodatkowe PPO (laboratorium)
+DTSTART:20250624T200000Z
+DTEND:20250624T220000Z
+DESCRIPTION:asddasdas\nhttps://pwr-edu.zoom.us/j/61259259920?pwd=5xeUapnQL
+ LrRaOEeyjc8tZLEPXRbvD.1\nHasło: HgQPYt
+END:VEVENT
+END:VCALENDAR
