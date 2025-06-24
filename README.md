@@ -20,6 +20,6 @@ App allows managing `.ics` files and uses the following properties:
 ---
 
 ## How to run?  
-Run the setup script: 
+Run the setup script(example.ics file needed): 
 ```bash
 ./setup.sh
