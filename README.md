@@ -1,14 +1,25 @@
 # Calendar App
 
 ---
-## Functionality
 
-App allows managing .ics files and uses SUMMARY, DTSTART, DTEND, DESCRIPTION properties.
+## Functionality  
+App allows managing `.ics` files and uses the following properties:  
+- `SUMMARY`  
+- `DTSTART`  
+- `DTEND`  
+- `DESCRIPTION`  
+
 ---
-## Dependencies
 
-icalendar, PyQt5, tkinter, datetime
+## Dependencies  
+- `icalendar`  
+- `PyQt5`  
+- `tkinter`  
+- `datetime`  
+
 ---
-## How to run?
 
-Run setup.sh file and wait a sec.
+## How to run?  
+Run the setup script: 
+```bash
+./setup.sh
