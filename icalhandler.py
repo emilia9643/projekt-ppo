@@ -10,6 +10,7 @@ def _utc(dt):
         return dt.astimezone(timezone.utc)
     return dt
 
+
 class newCalendar:
     def __init__(self, icalpath):
         self.icalpath=icalpath

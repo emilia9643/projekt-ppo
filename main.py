@@ -148,7 +148,7 @@ class Ui(QMainWindow):
             e=event['dtend']
 
             if s is not None and e is not None:
-                button=QPushButton(f"{event['summary']} {ft(s.hour)}:{ft(s.minute)}-{ft(e.hour)}:{ft(e.minute)} {e.day}.{e.month}.{e.year} || Description: {event['description']}")
+                button=QPushButton(f"{event['summary']} {ft(s.hour)}:{ft(s.minute)}-{ft(e.hour)}:{ft(e.minute)} {ft(e.day)}.{ft(e.month)}.{e.year} || Description: {event['description']}")
             else:
                 button=QPushButton(f"{event['summary']} (brak daty)")
             if event.get("description"):
